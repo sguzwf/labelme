@@ -27,7 +27,7 @@ jobs:
             --noconfirm \
             --specpath=build \
             --add-data="$OSAM_PATH/_models/yoloworld/clip/bpe_simple_vocab_16e6.txt.gz;osam/_models/yoloworld/clip" \
-            --add-data="$REPO/labelme/config/default_config.yaml;labelme/config" \
+            --add-data="$REPO/labelme/_config/default_config.yaml;labelme/_config" \
             --add-data="$REPO/labelme/icons/*;labelme/icons" \
             --add-data="$REPO/labelme/translate/*;translate" \
             --icon=$REPO/labelme/icons/icon.ico \

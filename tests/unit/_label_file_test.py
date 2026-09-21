@@ -99,7 +99,7 @@ def test_read_label_file_extracts_other_data(
     "mutator,error_match",
     [
         (lambda raw: raw.pop("imagePath"), "imagePath"),
-        (lambda raw: raw.pop("imageData"), "imageData"),
+        # fork: missing "imageData" key is treated as null (load from disk), not an error
         (lambda raw: raw.pop("shapes"), "shapes"),
         (lambda raw: raw.update({"imageHeight": 1}), "imageHeight mismatch"),
         (lambda raw: raw.update({"imageWidth": 1}), "imageWidth mismatch"),
@@ -116,7 +116,6 @@ def test_read_label_file_extracts_other_data(
     ],
     ids=[
         "missing_imagePath",
-        "missing_imageData",
         "missing_shapes",
         "imageHeight_mismatch",
         "imageWidth_mismatch",
