@@ -313,7 +313,7 @@ def read_label_file(*, filename: str) -> Annotation:
         with open(filename, encoding="utf-8") as f:
             raw: dict[str, Any] = json.load(f)
         image_path = PureWindowsPath(raw["imagePath"]).as_posix()
-        if raw["imageData"] is None:
+        if raw.get("imageData") is None:
             resolved_image_path = str(Path(filename).parent / image_path)
             try:
                 image_data = read_image_file(filename=resolved_image_path)
