@@ -1,0 +1,37 @@
+---
+name: Build Windows executable
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          activate-environment: true
+      - name: Setup
+        shell: bash
+        run: |
+          uv sync
+          uv pip install pyinstaller 'numpy<2.0'  # numpy>=2.0 causes build errors (see #1532)
+      - name: Build executable
+        shell: bash
+        run: |
+          OSAM_PATH=$(python -c "import os, osam; print(os.path.dirname(osam.__file__))")
+          pyinstaller labelme/__main__.py \
+            --name=Labelme \
+            --windowed \
+            --noconfirm \
+            --specpath=build \
+            --add-data="$OSAM_PATH/_models/yoloworld/clip/bpe_simple_vocab_16e6.txt.gz;osam/_models/yoloworld/clip" \
+            --add-data="labelme/config/default_config.yaml;labelme/config" \
+            --add-data="labelme/icons/*;labelme/icons" \
+            --add-data="labelme/translate/*;translate" \
+            --icon=labelme/icons/icon.ico \
+            --onedir
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Labelme-windows
+          path: dist/Labelme/
