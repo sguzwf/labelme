@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           OSAM_PATH=$(python -c "import os, osam; print(os.path.dirname(osam.__file__))")
-          REPO=$PWD  # --specpath=build makes relative --add-data paths resolve against build/, so use absolute paths
+          REPO=$(cygpath -m "$PWD")  # Windows-style path (D:/...): MSYS arg conversion mangles POSIX paths in ';' separated args
           pyinstaller labelme/__main__.py \
             --name=Labelme \
             --windowed \
